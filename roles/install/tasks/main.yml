@@ -1,0 +1,85 @@
+---
+#Creat the user and group for vault application
+
+ - name: create "{{ group_name }}" group
+   group:
+     name: "{{ group_name }}"
+     state: present
+
+ - name: create '{{ user_name }}" user
+   user:
+     name: "{{ user_name }}"
+     group: "{{ group_name }}"
+     comment: "{{ service_name }}"
+     shell: /bin/bash
+     state: present
+
+
+#Create the vault data dircetory - "{{ data_dir }}"
+
+ - name: create "{{ data_dir }}" directory
+   file:
+     path: "{{ data_dir }}"
+     owner: "{{ user_name }}"
+     group: "{{ group_name }}"
+     mode: 0755
+     state: directory
+
+#Install the vault package from yum repository 
+
+ - name: install the {{ vault_pack }}" package
+   yum:
+     name: "{{ vault_pack }}"
+     state: present
+
+#Push out the Vault configuartion file
+
+ - name: "install vault config file"
+   template:
+     src: vault.cfg.j2
+     dest: "{{ cfg_path }}"
+     owner: "{{ user_name }}"
+     group: "{{ group_name }}"
+     mode: 0664
+     backup: yes
+
+#Push out the Vault service file
+ 
+ - name: "Install vault service file"
+   template:
+     src: vault.service.j2
+     dest: :/etc/systemd/system/vault.service"
+     owner: root
+     group: root
+     mode: 0664
+     backup: yes
+
+
+#Start and enbale the vault service
+
+ - name: "start vault as a service"
+   service:
+     name: vault
+     state: started
+     enabled: yes
+
+#Configure the Sudoers file to manage the service 
+
+ - name: "Configure sudoers to manage vault service using standard user
+   lineinfile:
+     dest: /etc/sudoers
+     state: present
+     regexp: '^vault'
+     line: '%{{ group_name }} ALL=({{ user_name}}) NOPASSWD:/usr/sbin/systemctl *  vault'
+     state: present
+     backup: yes
+
+#Add the username who all are wants to manage the vault service
+
+ - name: "add the user into secodary group {{ group_name }}"
+   user: 
+     name: "{{ item }}"
+     group: "{{ group_name }}"
+     append: yes
+   with_items: "{{ vault_sudoers }}"
+  
