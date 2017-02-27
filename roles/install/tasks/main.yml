@@ -27,7 +27,7 @@
 
 #Install the vault package from yum repository 
 
- - name: install the {{ vault_pack }}" package
+ - name: install the "{{ vault_pack }}" package
    yum:
      name: "{{ vault_pack }}"
      state: present
@@ -76,7 +76,7 @@
 
 #Add the username who all are wants to manage the vault service
 
- - name: "add the user into secodary group {{ group_name }}"
+ - name: "add the user into secondary group {{ group_name }}"
    user: 
      name: "{{ item }}"
      group: "{{ group_name }}"

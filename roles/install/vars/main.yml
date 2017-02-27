@@ -2,10 +2,12 @@
 
 user_name: vault
 group_name: vault
+vault_pack: vault-0.6.5
 data_dir: /var/lib/vault
 cfg_path: /etc/vault.cfg
 service_name: Hasi Corp vault
 service_start_parems: 'server -config {{ cfg_path }}'
+
 
 #List the user who all are want sudo access for vault service manage
 
