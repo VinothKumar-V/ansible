@@ -1,5 +1,5 @@
 backend "file" {
- path = /var/lib/vault
+ path = "{{ data_dir }}"
 }
 
 listener "tcp" {
