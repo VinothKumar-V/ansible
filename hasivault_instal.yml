@@ -1,5 +1,6 @@
 ---
  - hosts: vault_node
+   become: true
 
    roles:
      - { role: install, tags:['vault_install']}
