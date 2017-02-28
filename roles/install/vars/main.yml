@@ -12,4 +12,4 @@ service_start_parems: 'server -config {{ cfg_path }}'
 #List the user who all are want sudo access for vault service manage
 
 vault_sudoers:
- - 44030538
+ - ldap_user
