@@ -15,7 +15,7 @@
      state: present
 
 
-#Create the vault data dircetory - "{{ data_dir }}"
+#Create the vault data dircetory 
 
  - name: create "{{ data_dir }}" directory
    file:
